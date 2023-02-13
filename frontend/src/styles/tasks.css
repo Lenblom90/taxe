@@ -2,5 +2,53 @@
   flex: 1;
   gap: 40px;
   display: grid;
-  grid: 1fr auto / 1fr 1fr;
+  grid: 1fr auto / 2fr 1fr;
+}
+
+.task-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-weight: 400;
+  padding: 0 10px;
+}
+
+.task-header h1 {
+  margin: 0px;
+  font-size: 2rem;
+}
+
+.task-header div {
+  font-size: 2rem;
+  font-weight: 800;
+}
+
+.tasklist {
+  padding: 0 10px;
+}
+
+.tasklist-item {
+  display: flex;
+}
+
+.tasklist-item a {
+  flex: 1;
+  text-decoration: none;
+  color: black;
+  display: flex;
+  gap: 5px;
+  flex-wrap: nowrap;
+}
+
+.tasklist-item a:active {
+  background: #000;
+  border-radius: 5px;
+}
+
+.estimate {
+  background-color: blue;
+  border-radius: 5px;
+  color: #fff;
+  padding: 0 5px;
+  font-weight: 600;
 }

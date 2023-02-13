@@ -1,115 +1,130 @@
+import { useState } from "react";
 import Calendar from "../components/Calendar";
 import Taskbar from "../components/Taskbar";
 import TaskList from "../components/TaskList";
 import "../styles/tasks.css";
+import {
+  status,
+  priority,
+  motivation,
+  eisenhower,
+  Task,
+  grouping,
+  sorting,
+} from "../types";
 
 export default function Tasks() {
-  const status = {
-    later: "later",
-    next: "next",
-    started: "started",
-    waiting: "waiting",
-    completed: "completed",
+  const updateTask = (task: Task) => {
+    const updatedTasks = tasks.map((x) => {
+      if (x.id === task.id) {
+        x = task;
+      }
+      return x;
+    });
+    setTasks(updatedTasks);
   };
 
-  const priority = {
-    highest: 2,
-    high: 1,
-    normal: 0,
-    low: -1,
-    lowest: -2,
+  const deleteTask = (id: string) => {
+    const remainingTasks = tasks.filter((x) => x.id !== id);
+    setTasks(remainingTasks);
   };
 
-  const motivation = {
-    must: "must",
-    should: "should",
-    want: "want",
-    unknown: "unknown",
-  };
-
-  const eisenhower = {
-    urgent_important: 1,
-    urgent: 2,
-    important: 3,
-    none: 4,
-    uncategorized: 0,
-  };
-
-  const newTask = (
-    id = crypto.randomUUID(),
+  const newTask: (
+    area_id: string,
+    name?: string,
+    note?: null,
+    status?: status,
+    estimate?: number,
+    priority?: priority,
+    motivation?: motivation,
+    eisenhower?: eisenhower,
+    source?: string,
+    source_id?: string,
+    scheduled_on?: string,
+    completed_at?: string
+  ) => Task = (
     area_id = crypto.randomUUID(),
-    status: string,
-    previous_status: string,
-    estimate: number,
-    priority: number,
-    motivation: string,
-    eisenhower: number,
-    sources: Array<Object>,
-    scheduled_on: string | null,
-    completed_at: string | null,
-    created_at: string,
-    updated_at: string,
-    deleted_at?: string | null
+    name?,
+    note?,
+    status?,
+    estimate?,
+    priority?,
+    motivation?,
+    eisenhower?,
+    source?,
+    source_id?,
+    scheduled_on?,
+    completed_at?
   ) => {
     const task = {
-      id: id,
+      id: crypto.randomUUID(),
       area_id: area_id,
+      name: name,
+      note: note,
       status: status,
-      previous_status: previous_status,
+      previous_status: null,
       estimate: estimate,
       priority: priority,
       motivation: motivation,
       eisenhower: eisenhower,
-      sources: sources,
+      sources: [
+        {
+          source: source,
+          source_id: source_id,
+        },
+      ],
       scheduled_on: scheduled_on,
       completed_at: completed_at,
-      created_at: created_at,
-      updated_at: updated_at,
-      deleted_at: deleted_at,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+      deleted_at: null,
     };
     return task;
   };
 
-  const tasks = [
+  const initialTasks = [
     newTask(
       crypto.randomUUID(),
-      crypto.randomUUID(),
+      "my first task",
+      null,
       status.later,
-      status.next,
       10,
       priority.normal,
       motivation.unknown,
       eisenhower.none,
-      [],
-      new Date().toISOString(),
-      new Date().toISOString(),
-      new Date().toISOString(),
+      "site",
+      "1",
       new Date().toISOString(),
       new Date().toISOString()
     ),
     newTask(
       crypto.randomUUID(),
-      crypto.randomUUID(),
+      "Task no 2",
+      null,
       status.started,
-      status.next,
       15,
       priority.low,
       motivation.want,
       eisenhower.none,
-      [],
-      null,
-      null,
+      undefined,
+      undefined,
       new Date().toISOString(),
-      new Date().toISOString(),
-      null
+      new Date().toISOString()
     ),
   ];
 
-  console.log(tasks[0]);
+  const [tasks, setTasks] = useState(initialTasks);
 
   return (
     <div id="tasks-page">
-      <TaskList tasks={tasks} />
+      <TaskList
+        workflow={{
+          name: "now/later",
+          group: grouping.nowLater,
+          sort: sorting.urgency,
+        }}
+        tasks={tasks}
+      />
       <Calendar />
       <Taskbar />
     </div>
