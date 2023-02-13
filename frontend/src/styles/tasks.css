@@ -1,0 +1,6 @@
+#tasks-page {
+  flex: 1;
+  gap: 40px;
+  display: grid;
+  grid: 1fr auto / 1fr 1fr;
+}

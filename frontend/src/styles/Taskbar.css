@@ -1,0 +1,4 @@
+#Taskbar {
+  grid-area: 2 / span 2;
+  background: linear-gradient(#278574, #fff);
+}
