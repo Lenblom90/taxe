@@ -31,7 +31,7 @@
   display: flex;
 }
 
-.tasklist-item a {
+.tasklist-item > div {
   flex: 1;
   text-decoration: none;
   color: black;
@@ -40,13 +40,21 @@
   flex-wrap: nowrap;
 }
 
-.tasklist-item a:active {
+.tasklist-item > div:active {
   background: #000;
   border-radius: 5px;
 }
 
 .estimate {
   background-color: blue;
+  border-radius: 5px;
+  color: #fff;
+  padding: 0 5px;
+  font-weight: 600;
+}
+
+.age {
+  background-color: gray;
   border-radius: 5px;
   color: #fff;
   padding: 0 5px;

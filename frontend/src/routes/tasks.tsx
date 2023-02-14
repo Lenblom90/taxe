@@ -43,7 +43,7 @@ export default function Tasks() {
     scheduled_on?: string,
     completed_at?: string
   ) => Task = (
-    area_id = crypto.randomUUID(),
+    area_id,
     name?,
     note?,
     status?,
@@ -82,35 +82,27 @@ export default function Tasks() {
     return task;
   };
 
-  const initialTasks = [
-    newTask(
-      crypto.randomUUID(),
-      "my first task",
-      null,
-      status.later,
-      10,
-      priority.normal,
-      motivation.unknown,
-      eisenhower.none,
-      "site",
-      "1",
-      new Date().toISOString(),
-      new Date().toISOString()
-    ),
-    newTask(
-      crypto.randomUUID(),
-      "Task no 2",
-      null,
-      status.started,
-      15,
-      priority.low,
-      motivation.want,
-      eisenhower.none,
-      undefined,
-      undefined,
-      new Date().toISOString(),
-      new Date().toISOString()
-    ),
+  const initialTasks: Task[] = [
+    {
+      area_id: "1",
+      id: crypto.randomUUID(),
+      name: "my first task",
+      status: status.later,
+      estimate: "10 minutes",
+      priority: priority.normal,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    },
+    {
+      area_id: "1",
+      id: crypto.randomUUID(),
+      name: "Task no 2",
+      status: status.started,
+      estimate: "15 minutes",
+      priority: priority.low,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    },
   ];
 
   const [tasks, setTasks] = useState(initialTasks);
@@ -124,6 +116,7 @@ export default function Tasks() {
           sort: sorting.urgency,
         }}
         tasks={tasks}
+        setTasks={setTasks}
       />
       <Calendar />
       <Taskbar />

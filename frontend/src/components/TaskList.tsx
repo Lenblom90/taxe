@@ -1,12 +1,17 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Task, grouping, sorting, status } from "../types";
+import { Task, grouping, sorting, status, priority } from "../types";
+import TaskForm from "./TaskForm";
+import TaskRow from "./TaskRow";
 
 export default function TaskList({
   tasks,
   workflow,
+  setTasks,
 }: {
-  tasks: Array<Task>;
+  tasks: Task[];
   workflow: { name: string; group: grouping; sort: string };
+  setTasks: any;
 }) {
   let group = grouping.none;
   let sort = sorting.urgency;
@@ -25,54 +30,46 @@ export default function TaskList({
     sort = sorting.urgency;
   }
 
+  const newTask = (newStatus: status) => {
+    setTasks([
+      ...tasks,
+      {
+        area_id: "1",
+        id: crypto.randomUUID(),
+        name: "",
+        status: newStatus,
+        priority: priority.normal,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      },
+    ]);
+  };
+
+  const editTask = (task: Task) => {
+    const temp = tasks.map((x) => {
+      return x.id === task.id ? task : x;
+    });
+    setTasks(temp);
+  };
+
   const now = tasks
     .filter((x) => x.status !== status.later)
-    .map((task) => {
-      const age = Math.round(
-        (Date.now() - Date.parse(task.created_at)) / (1000 * 60 * 60 * 24)
-      );
-
-      return (
-        <li key={task.id} className="tasklist-item">
-          <Link to={`tasks/${task.id}`}>
-            <input type="checkbox"></input>
-            <div>{task.note}</div>
-            <div>{task.name}</div>
-            <div className="estimate">{task.estimate + " MINUTES"}</div>
-            <div>{task.priority}</div>
-            <div>{age}</div>
-          </Link>
-        </li>
-      );
-    });
+    .map((task) => <TaskRow key={task.id} task={task} editTask={editTask} />);
 
   const later = tasks
     .filter((x) => x.status === status.later)
-    .map((task) => {
-      return (
-        <li key={task.id} className="tasklist-item">
-          <Link to={`tasks/${task.id}`}>
-            <input type="checkbox"></input>
-            <div>{task.note}</div>
-            <div>{task.name}</div>
-            <div>{task.estimate + " MINUTES"}</div>
-            <div>{task.priority}</div>
-            <div>{task.created_at}</div>
-          </Link>
-        </li>
-      );
-    });
+    .map((task) => <TaskRow key={task.id} task={task} editTask={editTask} />);
 
   return (
     <div>
       <div className="task-header">
         <h1>NOW</h1>
-        <div>+</div>
+        <div onClick={() => newTask(status.next)}>+</div>
       </div>
       <ul className="tasklist">{now}</ul>
       <div className="task-header">
         <h1>LATER</h1>
-        <div>+</div>
+        <div onClick={() => newTask(status.later)}>+</div>
       </div>
       <ul className="tasklist">{later}</ul>
     </div>

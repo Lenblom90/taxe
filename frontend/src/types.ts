@@ -2,21 +2,21 @@ export type Task = {
   id: string;
   area_id: string;
   name?: string;
-  note?: null;
+  note?: string | number | readonly string[];
   status?: string;
-  previous_status?: string | null;
-  estimate?: number | null;
-  priority?: number | null;
-  motivation?: string | null;
-  eisenhower?: number | null;
+  previous_status?: string;
+  estimate?: string;
+  priority?: number;
+  motivation?: string;
+  eisenhower?: number;
   sources?: {}[];
-  source?: string | null;
-  source_id?: string | null;
+  source?: string;
+  source_id?: string;
   created_at: string;
   updated_at: string;
   scheduled_on?: string;
   completed_at?: string;
-  deleted_at?: string | null;
+  deleted_at?: string;
 };
 
 export enum status {
