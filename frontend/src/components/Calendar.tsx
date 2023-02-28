@@ -1,15 +1,82 @@
 import { useState } from "react";
+import "../styles/Calendar.css";
 
-function CalHeader({
-  currentDate,
-  setYear,
-  setDate,
-  setCalView,
+function DayView({
+  date,
+  setView,
+  events,
 }: {
-  currentDate: Date;
-  setDate: any;
-  setCalView: any;
+  date: Date;
+  setView: any;
+  events: [];
 }) {
+  const hours = [
+    1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21,
+    22, 23, 24,
+  ];
+
+  const [tasks, setTasks] = useState(events);
+  const onDragStart = (event, taskName) => {
+    console.log("dragstart on div: ", taskName);
+    event.dataTransfer.setData("taskName", taskName);
+  };
+
+  const onDrop = (event, cat) => {
+    let taskName = event.dataTransfer.getDate("taskName");
+
+    let newTasks = tasks.filter((task) => {
+      if ((task.taskName = taskName)) {
+        task.type = cat;
+      }
+      return task;
+    });
+
+    setTasks(newTasks);
+  };
+
+  const times = hours.map((hour) => {
+    let event = events.find((x) => x.start <= hour && x.end >= hour);
+    return (
+      <tr
+        onDragStart={(event) => onDragStart(event, hour)}
+        key={hour}
+        className="day-row"
+      >
+        <td>{hour}</td>
+        <td>{event ? event.title : null}</td>
+      </tr>
+    );
+  });
+
+  const onDragOver = (event) => {
+    event.preventDefault();
+  };
+
+  return (
+    <div
+      onDragOver={(event) => onDragOver(event)}
+      onDrop={(event) => onDrop(event, "hello")}
+      id="cal"
+      className="calendar"
+    >
+      <div className="cal-header">
+        <div className="cal-nav">
+          <button onClick={() => setView("month")}>Month</button>
+          <button onClick={() => setView("week")}>Week</button>
+          <button onClick={() => setView("day")}>Day</button>
+          <h1>{date.toDateString()}</h1>
+        </div>
+      </div>
+      <div id="cal-frame">
+        <table className="day">
+          <tbody>{times}</tbody>
+        </table>
+      </div>
+    </div>
+  );
+}
+
+function MonthView({ currentDate, setDate, currentYear, setCalView }) {
   const switchMonth = (forward: boolean) => {
     if (forward) {
       if (currentDate.getMonth() < 12) {
@@ -42,62 +109,56 @@ function CalHeader({
     }
   };
 
-  return (
-    <div className="cal-header">
-      <div className="cal-nav">
-        <button onClick={() => setCalView("month")}>Month</button>
-        <button onClick={() => setCalView("week")}>Week</button>
-        <button onClick={() => setCalView("day")}>Day</button>
-      </div>
-      <span
-        className="left button"
-        id="prev"
-        onClick={() => switchMonth(false)}
-      >
-        &lang;
-      </span>
-      <span className="month-year" id="label">
-        {currentDate.getMonth() + " " + currentDate.getFullYear()}
-      </span>
-      <span
-        className="right button"
-        id="next"
-        onClick={() => switchMonth(true)}
-      >
-        &rang;
-      </span>
-    </div>
-  );
-}
+  let month = currentYear[currentDate.getMonth()];
+  let firstDay = new Date(
+    currentDate.getFullYear(),
+    currentDate.getMonth(),
+    1
+  ).getDay();
 
-function CalTable({
-  currentDate,
-  currentYear,
-  currentView,
-}: {
-  currentDate: Date;
-  currentYear: any;
-  currentView: string;
-}) {
-  if (currentView === "day") {
-    return <div>{currentDate.toISOString()}</div>;
-  } else if (currentView === "month") {
-    let month = currentYear[currentDate.getMonth() - 1];
-    let firstDay = new Date(
-      currentDate.getFullYear(),
-      currentDate.getMonth(),
-      1
-    ).getDay();
-
-    const dates = month.map((day, index: number) => {
-      return <td>{day.date}</td>;
-    });
-    for (let i = 0; i < firstDay - 1; i++) {
-      dates.unshift(<td></td>);
-    }
+  const dates = month.map((day: any, index: number) => {
     return (
+      <td
+        onClick={() => {
+          setDate(new Date(day.year, day.month, day.date));
+          setCalView("day");
+        }}
+      >
+        {day.date}
+      </td>
+    );
+  });
+  for (let i = 0; i < firstDay - 1; i++) {
+    dates.unshift(<td></td>);
+  }
+  return (
+    <div id="cal" className="calendar">
+      <div className="cal-header">
+        <div className="cal-nav">
+          <button onClick={() => setCalView("month")}>Month</button>
+          <button onClick={() => setCalView("week")}>Week</button>
+          <button onClick={() => setCalView("day")}>Day</button>
+        </div>
+        <span
+          className="left button"
+          id="prev"
+          onClick={() => switchMonth(false)}
+        >
+          &lang;
+        </span>
+        <span className="month-year" id="label">
+          {currentDate.getMonth() + 1 + " " + currentDate.getFullYear()}
+        </span>
+        <span
+          className="right button"
+          id="next"
+          onClick={() => switchMonth(true)}
+        >
+          &rang;
+        </span>
+      </div>
       <div id="cal-frame">
-        <table className="curr">
+        <table className="month">
           <thead id="cal-days">
             <tr>
               <th>mon</th>
@@ -109,7 +170,7 @@ function CalTable({
               <th>sun</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="month-rows">
             <tr>{dates.slice(0, 7)}</tr>
             <tr>{dates.slice(7, 14)}</tr>
             <tr>{dates.slice(14, 21)}</tr>
@@ -118,25 +179,59 @@ function CalTable({
           </tbody>
         </table>
       </div>
-    );
-  } else {
-    let week = [
-      <td></td>,
-      <td></td>,
-      <td></td>,
-      <td></td>,
-      <td></td>,
-      <td></td>,
-      <td></td>,
-    ];
-    week.map((day, index) => {
-      let position = index - currentDate.getDay() + 1;
-      week[index] = <td key={index}>{currentDate.getDate() + position}</td>;
-    });
-    return (
+    </div>
+  );
+}
+
+function WeekView({
+  currentDate,
+  setCalView,
+  setDate,
+}: {
+  currentDate: Date;
+  setCalView: any;
+  setDate: any;
+}) {
+  const week = [
+    <td></td>,
+    <td></td>,
+    <td></td>,
+    <td></td>,
+    <td></td>,
+    <td></td>,
+    <td></td>,
+  ];
+  week.map((day, index) => {
+    const position = index - currentDate.getDay() + 1;
+    const date = currentDate.getDate() + position;
+    if (date > 0) {
+      week[index] = (
+        <td
+          onClick={() => {
+            setDate(
+              new Date(currentDate.getFullYear(), currentDate.getMonth(), date)
+            );
+            setCalView("day");
+          }}
+          key={index}
+        >
+          {date}
+        </td>
+      );
+    }
+  });
+  return (
+    <div id="cal" className="calendar">
+      <div className="cal-header">
+        <div className="cal-nav">
+          <button onClick={() => setCalView("month")}>Month</button>
+          <button onClick={() => setCalView("week")}>Week</button>
+          <button onClick={() => setCalView("day")}>Day</button>
+        </div>
+      </div>
       <div id="cal-frame">
-        <table className="curr">
-          <thead id="cal-days">
+        <table className="week">
+          <thead>
             <tr>
               <th>mon</th>
               <th>tue</th>
@@ -148,12 +243,12 @@ function CalTable({
             </tr>
           </thead>
           <tbody>
-            <tr>{week}</tr>
+            <tr className="week-row">{week}</tr>
           </tbody>
         </table>
       </div>
-    );
-  }
+    </div>
+  );
 }
 
 export default function Calendar() {
@@ -174,13 +269,13 @@ export default function Calendar() {
       31,
     ];
     let currentYear = new Array();
-    months.forEach((month, index) => {
-      currentYear.push(monthArray(index + 1, month, date.getFullYear()));
+    months.forEach((monthDays, index) => {
+      currentYear.push(monthArray(index + 1, monthDays, date.getFullYear()));
     });
     return currentYear;
   };
 
-  const monthArray = (month, days, year) => {
+  const monthArray = (month: number, days: number, year: number) => {
     let array = [];
     for (let i = 0; i < days; i++) {
       array[i] = {
@@ -193,23 +288,33 @@ export default function Calendar() {
     return array;
   };
 
-  const [calView, setCalView] = useState("month");
-  const [date, setDate] = useState(new Date());
-  const [thisYear, setYear] = useState(yearArray(date));
-  thisYear[date.getMonth()][date.getDate()].active = true;
-  return (
-    <div id="cal" className="calendar">
-      <CalHeader
-        currentDate={date}
-        setYear={setYear}
+  const [currentDate, setDate] = useState(new Date());
+  const [currentYear, setYear] = useState(yearArray(currentDate));
+  const [currentView, setCalView] = useState("day");
+  //  currentYear[currentDate.getMonth()][currentDate.getDate()].active = true;
+
+  if (currentView === "day") {
+    const events = [
+      { start: 1, end: 3, title: "Party" },
+      { start: 7, end: 17, title: "work" },
+    ]; //currentYear[currentDate.getMonth()][currentDate.getDate()].events;
+    return <DayView date={currentDate} setView={setCalView} events={events} />;
+  } else if (currentView === "month") {
+    return (
+      <MonthView
+        currentDate={currentDate}
+        currentYear={currentYear}
         setDate={setDate}
         setCalView={setCalView}
       />
-      <CalTable
-        currentDate={date}
-        currentYear={thisYear}
-        currentView={calView}
+    );
+  } else {
+    return (
+      <WeekView
+        currentDate={currentDate}
+        setCalView={setCalView}
+        setDate={setDate}
       />
-    </div>
-  );
+    );
+  }
 }

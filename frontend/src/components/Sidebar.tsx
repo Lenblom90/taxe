@@ -15,22 +15,22 @@ export default function Sidebar() {
       </div>
       <nav>
         <ul className="page-nav">
-          <li className="home">
+          <li className="home-btn">
             <Link to="/">
               <img src={HomeIcon} alt="logo" />
             </Link>
           </li>
-          <li className="tasks">
+          <li className="tasks-btn">
             <Link to="/tasks">
               <img src={TaskIcon} alt="logo" />
             </Link>
           </li>
-          <li className="journal">
+          <li className="journal-btn">
             <Link to="/journal">
               <img src={JournalIcon} alt="logo" />
             </Link>
           </li>
-          <li className="calendar">
+          <li className="calendar-btn">
             <Link to="/calendar">
               <img src={CalendarIcon} alt="logo" />
             </Link>
