@@ -29,24 +29,27 @@
 
 .tasklist-item {
   display: flex;
+  padding: 5px;
+  border-radius: 10px;
+  background: linear-gradient(#278574,#fff);
 }
 
 .tasklist-item > div {
-  flex: 1;
   text-decoration: none;
-  color: black;
   display: flex;
   gap: 5px;
   flex-wrap: nowrap;
+  flex: 25% 0 1;
+  align-items: center;
+  justify-content: center;
 }
 
 .tasklist-item > div:active {
-  background: #000;
   border-radius: 5px;
 }
 
 .estimate {
-  background-color: blue;
+  background-color: #278574;
   border-radius: 5px;
   color: #fff;
   padding: 0 5px;

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Task } from "../types";
 import TaskForm from "./TaskForm";
+import { Draggable } from "@fullcalendar/interaction";
 
 export default function TaskRow({
   task,
@@ -19,6 +20,7 @@ export default function TaskRow({
     setTimeout(() => setEditable(false), 1000);
   };
 
+
   const form = <TaskForm initialTask={task} submitEdit={submitEdit} />;
   const row = (
     <li onClick={() => setEditable(!isEditable)} className="tasklist-item">
@@ -33,5 +35,17 @@ export default function TaskRow({
     </li>
   );
 
-  return <>{isEditable ? form : row}</>;
+  return <>{isEditable ? form : row }</>;
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+  const tasks =  document.querySelectorAll('.tasklist-item');
+  tasks.forEach((item) => new Draggable(item, {
+    eventData: {
+      title: 'event',
+      duration: '02:00'
+
+    }
+    }
+  ));
+})

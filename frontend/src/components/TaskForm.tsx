@@ -18,7 +18,8 @@ export default function TaskForm({
 }) {
   const [task, setTask] = useState(initialTask);
 
-  const handleSubmit = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
     setTask({
       ...task,
       updated_at: new Date().toISOString(),
