@@ -38,7 +38,7 @@ export default function Tasks() {
   ];
 
   const [tasks, setTasks] = useState(initialTasks);
-
+  const [dragTask, setDragTask] = useState(null);
   return (
     <div id="tasks-page">
       <TaskList
@@ -49,8 +49,9 @@ export default function Tasks() {
         }}
         tasks={tasks}
         setTasks={setTasks}
+        setDrag={setDragTask}
       />
-      <Calendar />
+      <Calendar dragTask={dragTask}/>
       <Taskbar />
     </div>
   );

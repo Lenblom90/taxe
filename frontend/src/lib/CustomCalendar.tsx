@@ -1,46 +1,41 @@
+import { useState } from "react";
+import { Task } from "../types";
+
+
 function DayView({
     date,
     setView,
     events,
+    dragTask
   }: {
     date: Date;
     setView: any;
-    events: [];
+    events: Task[];
+    dragTask: Task;
   }) {
     const hours = [
       1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21,
-      22, 23, 24,
+      22, 23, 24
     ];
-  
-    const [tasks, setTasks] = useState(events);
-    const onDragStart = (event, taskName) => {
-      console.log("dragstart on div: ", taskName);
-      event.dataTransfer.setData("taskName", taskName);
-    };
-  
-    const onDrop = (event, cat) => {
-      let taskName = event.dataTransfer.getDate("taskName");
-  
-      let newTasks = tasks.filter((task) => {
-        if ((task.taskName = taskName)) {
-          task.type = cat;
-        }
-        return task;
-      });
-  
-      setTasks(newTasks);
+      
+    const onDrop = (e) => {
+      e.target.textContent = dragTask.name;
     };
   
     const times = hours.map((hour) => {
-      let event = events.find((x) => x.start <= hour && x.end >= hour);
+      const event = events.find((x) => {
+        const start = new Date(Date.parse(x.scheduled_on)).getHours();
+        const end = start + 1;
+        return start <= hour && end >= hour
+      });
       return (
-        <tr
-          onDragStart={(event) => onDragStart(event, hour)}
+        <tr         onDragOver={(event) => onDragOver(event)}
+        onDrop={(event) => onDrop(event)}
           key={hour}
           className="day-row"
         >
           <td>{hour}</td>
-          <td>{event ? event.title : null}</td>
+          <td>{event ? event.name : null}</td>
         </tr>
       );
     });
@@ -51,8 +46,6 @@ function DayView({
   
     return (
       <div
-        onDragOver={(event) => onDragOver(event)}
-        onDrop={(event) => onDrop(event, "hello")}
         id="cal"
         className="calendar"
       >
@@ -248,7 +241,7 @@ function WeekView({
     );
   }
   
-  export function Calendar() {
+export function Calendar({dragTask}) {
     const yearArray = (date: Date) => {
       const leapYear = date.getFullYear() % 4;
       const months = [
@@ -292,10 +285,10 @@ function WeekView({
   
     if (currentView === "day") {
       const events = [
-        { start: 1, end: 3, title: "Party" },
-        { start: 7, end: 17, title: "work" },
+        { name: "Party", scheduled_on: new Date(2023,3,10,1).toISOString(), estimate:"2 hours"},
+        { name: "Work", scheduled_on: new Date(2023,3,10,7).toISOString(), estimate:"8 hours"},
       ]; //currentYear[currentDate.getMonth()][currentDate.getDate()].events;
-      return <DayView date={currentDate} setView={setCalView} events={events} />;
+      return <DayView date={currentDate} setView={setCalView} events={events} dragTask={dragTask}/>;
     } else if (currentView === "month") {
       return (
         <MonthView

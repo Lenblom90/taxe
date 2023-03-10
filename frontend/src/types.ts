@@ -5,7 +5,7 @@ export type Task = {
   note?: string | number | readonly string[];
   status?: string;
   previous_status?: string;
-  estimate?: string;
+  estimate?: number;
   priority?: number;
   motivation?: string;
   eisenhower?: number;
@@ -25,6 +25,19 @@ export enum status {
   started = "started",
   waiting = "waiting",
   completed = "completed",
+}
+
+export enum estimate {
+  five_minutes = 5,
+  ten_minutes = 10,
+  fifteen_minutes = 15,
+  twenty_minutes = 20,
+  thirty_minutes = 30,
+  fortyfive_minutes = 45,
+  one_hour = 60,
+  two_hours = 120,
+  four_hours = 240,
+  eight_hours = 480
 }
 
 export enum priority {
@@ -64,3 +77,4 @@ export enum sorting {
   estimate = "estimate",
   age = "age",
 }
+

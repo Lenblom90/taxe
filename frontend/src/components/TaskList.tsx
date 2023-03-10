@@ -6,6 +6,7 @@ export default function TaskList({
   tasks,
   workflow,
   setTasks,
+  setDrag,
 }: {
   tasks: Task[];
   workflow: { name: string; group: grouping; sort: string };
@@ -27,7 +28,6 @@ export default function TaskList({
     group = grouping.Eisenhower;
     sort = sorting.urgency;
   }
-
 
   const newTask = (newStatus: status) => {
     setTasks([
@@ -53,11 +53,11 @@ export default function TaskList({
 
   const now = tasks
     .filter((x) => x.status !== status.later)
-    .map((task) => <TaskRow key={task.id} task={task} editTask={editTask} />);
+    .map((task) => <TaskRow key={task.id} task={task} editTask={editTask} setDrag={setDrag} />);
 
   const later = tasks
     .filter((x) => x.status === status.later)
-    .map((task) => <TaskRow key={task.id} task={task} editTask={editTask} />);
+    .map((task) => <TaskRow key={task.id} task={task} editTask={editTask} setDrag={setDrag} />);
 
   return (
     <div>

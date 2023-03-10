@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { priority, status, Task } from "../types";
+import { estimate, priority, status, Task } from "../types";
 import "../styles/Taskform.css";
 import pin from "../assets/Pin.svg";
 import book from "../assets/Book.svg";
@@ -28,10 +28,10 @@ export default function TaskForm({
   };
 
   const handleCompletedChange = (e: any) => {
-    setTask({
-      ...task,
-      completed_at: new Date().toISOString(),
-    });
+      setTask({
+        ...task,
+        completed_at: e.target.checked ? new Date().toISOString() : undefined,
+      });      
   };
 
   const handleNameChange = (e: any) => {
@@ -58,7 +58,7 @@ export default function TaskForm({
   const handleEstimateChange = (e: any) => {
     setTask({
       ...task,
-      estimate: e.target.value,
+      estimate: Number.parseInt(e.target.value),
     });
   };
 
@@ -70,11 +70,11 @@ export default function TaskForm({
   };
 
   return (
-    <div onMouseLeave={handleSubmit} className="task-form">
+    <div onSubmit={handleSubmit} className="task-form">
       <form method="post" onSubmit={handleSubmit}>
         <div className="form-header">
           <input
-            checked={!!task.completed_at}
+            defaultChecked={!!task.completed_at}
             onChange={handleCompletedChange}
             type="checkbox"
           ></input>
@@ -110,27 +110,27 @@ export default function TaskForm({
               onChange={handleEstimateChange}
               name="taskEstimate"
             >
-              <option>5 minutes</option>
-              <option>10 minutes</option>
-              <option>15 minutes</option>
-              <option>20 minutes</option>
-              <option>30 minutes</option>
-              <option>45 minutes</option>
-              <option>1 hour</option>
-              <option>2 hours</option>
-              <option>4 hours</option>
-              <option>8 hours</option>
+              <option value={estimate.five_minutes}>5 minutes</option>
+              <option value={estimate.ten_minutes}>10 minutes</option>
+              <option value={estimate.fifteen_minutes}>15 minutes</option>
+              <option value={estimate.twenty_minutes}>20 minutes</option>
+              <option value={estimate.thirty_minutes}>30 minutes</option>
+              <option value={estimate.fortyfive_minutes}>45 minutes</option>
+              <option value={estimate.one_hour}>1 hour</option> 
+              <option value={estimate.two_hours}>2 hours</option>
+              <option value={estimate.four_hours}>4 hours</option>
+              <option value={estimate.eight_hours}>8 hours</option>
             </select>
             <select
               value={task.priority}
               onChange={handlePriorityChange}
               name="taskPriority"
             >
-              <option>{priority.lowest}</option>
-              <option>{priority.low}</option>
-              <option>{priority.normal}</option>
-              <option>{priority.high}</option>
-              <option>{priority.highest}</option>
+              <option value={priority.lowest}>lowest</option>
+              <option value={priority.low}>low</option>
+              <option value={priority.normal}>normal</option>
+              <option value={priority.high}>high</option>
+              <option value={priority.highest}>highest</option>
             </select>
           </div>
           <div className="form-icons">
@@ -139,10 +139,11 @@ export default function TaskForm({
             <img src={hourglass} alt="hourglass-icon"></img>
             <img src={sundial} alt="sundial-icon"></img>
           </div>
-          <TaskSchedule />
+          <TaskSchedule task={task}/>
           <TaskRepeat />
           <TaskTimer />
         </div>
+        <button type="submit">SUBMIT</button>
       </form>
     </div>
   );
