@@ -20,16 +20,17 @@ function DayView({
       
     const onDrop = (e) => {
       e.target.textContent = dragTask.name;
+      console.log(dragTask);
     };
   
     const times = hours.map((hour) => {
       const event = events.find((x) => {
         const start = new Date(Date.parse(x.scheduled_on)).getHours();
-        const end = start + 1;
+        const end = start + x.estimate / 60;
         return start <= hour && end >= hour
       });
       return (
-        <tr         onDragOver={(event) => onDragOver(event)}
+        <tr         onDragOver={(e) => onDragOver(e)}
         onDrop={(event) => onDrop(event)}
           key={hour}
           className="day-row"
@@ -40,9 +41,7 @@ function DayView({
       );
     });
   
-    const onDragOver = (event) => {
-      event.preventDefault();
-    };
+    const onDragOver = (e: Event) => e.preventDefault();
   
     return (
       <div
@@ -241,7 +240,7 @@ function WeekView({
     );
   }
   
-export function Calendar({dragTask}) {
+export function Calendar({dragTask, events}) {
     const yearArray = (date: Date) => {
       const leapYear = date.getFullYear() % 4;
       const months = [
@@ -284,10 +283,7 @@ export function Calendar({dragTask}) {
     //  currentYear[currentDate.getMonth()][currentDate.getDate()].active = true;
   
     if (currentView === "day") {
-      const events = [
-        { name: "Party", scheduled_on: new Date(2023,3,10,1).toISOString(), estimate:"2 hours"},
-        { name: "Work", scheduled_on: new Date(2023,3,10,7).toISOString(), estimate:"8 hours"},
-      ]; //currentYear[currentDate.getMonth()][currentDate.getDate()].events;
+     //currentYear[currentDate.getMonth()][currentDate.getDate()].events;
       return <DayView date={currentDate} setView={setCalView} events={events} dragTask={dragTask}/>;
     } else if (currentView === "month") {
       return (

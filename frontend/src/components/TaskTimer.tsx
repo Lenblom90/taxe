@@ -1,3 +1,7 @@
-export default function TaskTimer() {
-  return <div hidden>timer</div>;
+export default function TaskTimer({show} : {show: boolean;}) {
+  if(show){
+    return <div>timer</div>;
+  } else {
+    return <></>
+  }
 }

@@ -34,6 +34,18 @@
   justify-content: end;
 }
 
+.form-body {
+  display: flex;
+}
+
+.form-schedule {
+  background: #000;
+  padding: 5px;
+  display: flex;
+  align-items: start;
+  justify-content: center;
+}
+
 #taskCompleted {
   border: 5px dotted black;
 }
