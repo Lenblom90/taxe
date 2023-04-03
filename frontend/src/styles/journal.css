@@ -1,0 +1,86 @@
+.journal {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.journal-header {
+  padding-bottom: 5px;
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+  align-items: center;
+  background: darkgreen;
+}
+
+.switch {
+  display: flex;
+}
+
+.score {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: space-between;
+  text-align: center;
+}
+
+.entries {
+  display: flex;
+  gap: 5px;
+}
+
+.journal-list {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: start;
+  padding: 10px;
+}
+
+.journal-list ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  width: 100%;
+}
+
+.journal-entry {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: #000;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.entry-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 5px;
+}
+
+.entry-date {
+  font-weight: 600;
+}
+
+.entry-title {
+}
+
+.entry-mood {
+  width: 10px;
+  height: 10px;
+  font-size: 0.5rem;
+}
+
+.entry-body {
+  flex: 1 1 100px;
+  padding-left: 30px;
+}
+
+.entry-body textarea {
+  height: 100px;
+  width: 90%;
+  border: none;
+}

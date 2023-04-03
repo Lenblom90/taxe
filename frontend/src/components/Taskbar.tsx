@@ -1,5 +1,3 @@
-import "../styles/Taskbar.css";
-
 export default function Taskbar() {
   return (
     <div id="Taskbar">

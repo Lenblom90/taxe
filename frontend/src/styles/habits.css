@@ -1,0 +1,65 @@
+.habits {
+  height: 100%;
+}
+
+.habits-grid {
+  background: #000;
+  display: grid;
+  grid-template: 1fr 1fr / 1fr;
+}
+
+.habits-header {
+  display: flex;
+  gap: 5px;
+}
+
+.habit-days {
+  display: flex;
+  gap: 2px;
+}
+
+.habit-group {
+  display: flex;
+}
+
+.habit-row {
+  display: flex;
+}
+
+.habit-modal {
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.3);
+  display: flex;
+}
+
+.habit-form {
+  padding: 20px;
+  flex: 0 1 500px;
+  margin: auto;
+  margin-top: 50px;
+  background: purple;
+}
+
+.habit-name {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.habit-color {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.habit-recurrence {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}

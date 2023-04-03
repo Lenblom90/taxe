@@ -4,7 +4,6 @@
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  height: 100vh;
   background: linear-gradient(#8ab4ac, #fff);
   padding: 0 5px;
 }

@@ -37,7 +37,7 @@ export enum estimate {
   one_hour = 60,
   two_hours = 120,
   four_hours = 240,
-  eight_hours = 480
+  eight_hours = 480,
 }
 
 export enum priority {
@@ -78,3 +78,23 @@ export enum sorting {
   age = "age",
 }
 
+export type Entry = {
+  id: string;
+  title: string;
+  date: string;
+  text: string;
+  mood: number;
+  energy: number;
+  busy: number;
+};
+
+export type Habit = {
+  id: string;
+  name: string;
+  color: string;
+  recurrence: string;
+  scheduled_time: string;
+  estimate: number;
+  healthy: boolean;
+  paused: boolean;
+};

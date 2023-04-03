@@ -1,58 +1,50 @@
 .calendar {
   background-color: rgba(100, 100, 100, 0.7);
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  padding: 20px 5px;
-  align-items: center;
+  padding: 0;
+  height: 100vh;
+  overflow-y: scroll;
 }
 
-.cal-header {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-#cal-frame {
+.calendar-footer {
+  height: 100px;
+  width: 100px;
+  background: #000;
+  position: sticky;
+  bottom: 0px;
   width: 100%;
-  max-height: 60vh;
 }
 
 .day {
   background-color: rgba(100, 100, 100, 0.7);
   color: white;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  justify-content: center;
-  align-items: start;
   padding: 5px;
   width: 90%;
 }
 
 .hours {
-  width: 100;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: repeat(1fr, 24);
 }
 
 .hour {
-  height: 5vh;
-  border-bottom: 2px solid black;
+  height: 2rem;
   padding: 10px;
   display: flex;
   gap: 8px;
   align-items: center;
 }
 
-.hour div:first-child {
+.hour-number {
   width: 25px;
   background: #000;
   text-align: center;
+  align-self: start;
 }
 
-.day-event {
+.hour-events {
   position: relative;
-  background: green;
+  border-bottom: 2px solid black;
   padding: 16px 0;
   width: 100%;
-  height: 100%;
 }

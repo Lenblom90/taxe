@@ -2,11 +2,10 @@
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
-
+  font-size: medium;
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
   background-color: #242424;
-
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -14,11 +13,17 @@
   -webkit-text-size-adjust: 100%;
 }
 
-body {
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+body,
+html {
+  margin: 0;
+  height: 100%;
+}
+
+#root {
+  display: grid;
+  grid: 1fr / auto 1fr;
+  font-size: medium;
+  height: 100%;
 }
 
 button {
